@@ -1,37 +1,31 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.all;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
+entity decoder is
+port(
+	e, s1, s0 : in std_logic;
+	o : out std_logic_vector(3 downto 0) );
+end decoder;
 
-entity DECODER is
-    port (
-        A, B : in STD_LOGIC;
-        Y3, Y2, Y1, Y0 : out STD_LOGIC);
-end DECODER;
 
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
+entity andgate is
+    port ( i1, i2, i3 : in std_logic;
+           o1 : out std_logic);
+end andgate;
+architecture dataflow of andgate is begin
+    o1 <= i1 and i2 and i3;
+end dataflow;
 
-entity AND_GATE is
-    port (a, b : in STD_LOGIC;
-        y : out STD_LOGIC);
-end AND_GATE;
 
-architecture behavioral of AND_GATE is
+architecture Structural of decoder is
+	component andgate -- and component declaration
+	port (i1, i2, i3: in std_logic;
+		  o1: out std_logic);
+	end component;
 begin
-    Y <= A and B;
-end behavioral;
-
-architecture structural of DECODER is
-    component AND_GATE
-        port (
-            A, B : in STD_LOGIC;
-            Y : out STD_LOGIC);
-    end component;    
-begin
-   Y1_A: AND_GATE port map(not A, not B, Y0);
-   Y2_A: AND_GATE port map(not A, B,Y1);
-   Y3_A: AND_GATE port map( A, not B,Y2);
-   Y4_A: AND_GATE port map( A, B,Y3);
-end structural;
-     
+	c0: andgate port map (i1 => e, i2 => not s1, i3 => not s0, o1 => o(0));
+    c1: andgate port map (i1 => e, i2 => not s1, i3 => s0, o1 => o(1));
+    c2: andgate port map (i1 => e, i2 => s1, i3 => not s0, o1 => o(2));
+    c3: andgate port map (i1 => e, i2 => s1, i3 => s0, o1 => o(3));
+end Structural;

@@ -1,18 +1,19 @@
 library IEEE;
-use IEEE.STD_LOGIC_1164.all;
- 
-entity decoder is
-port(
-	e, s0, s1: in STD_LOGIC;
-	o : out STD_LOGIC_VECTOR(3 downto 0) );
-end decoder;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
+entity DECODER is
+    port ( A,B : in  STD_LOGIC;
+           Y3,Y2,Y1,Y0 : out  STD_LOGIC);
+end DECODER;
 
-architecture dataflow of decoder is
+architecture dataflow of DECODER is
 begin
-	process(e, s0, s1, o) is
-	begin
-    	o <= ( 0=>(e and (not s0) and (not s1)) , 1=>(e and s0 and (not s1)), 2=>(e and (not s0) and s1), 3=>(e and s0 and s1), others=>'0');  
-	end process;
-end dataflow;
 
+Y0 <= ((not A)and(not B));
+Y1 <= ((not A) and B);
+Y2 <= (A and (not B));
+Y3 <= (A and B);
+
+end dataflow;
